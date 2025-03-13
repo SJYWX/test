@@ -1,8 +1,9 @@
-// Quantumult X 脚本: 捕获京东请求的 Cookie 并显示弹窗
-
-[rewrite_local]
-# 京东Cookie获取
-^https:\/\/(api\.m|me-api|ms\.jr)\.jd\.com\/(client\.action\?functionId=signBean|user_new\/info\/GetJDUserInfoUnion\?|gw\/generic\/hy\/h5\/m\/appSign\?) url script-request-header https://raw.githubusercontent.com/your-repo/your-script/master/GetJDCookie.js 
-
-[mitm]
-hostname = api.m.jd.com,  me-api.jd.com,  ms.jr.jd.com 
+var cookie = $request.headers['Cookie']; 
+if (cookie) {
+    var subTitle = "京东Cookie已获取";
+    var content = cookie + "\n点击复制到剪贴板";
+    $notification.post(" 京东Cookie", subTitle, content, {"open-url": "jb://copy?text=" + encodeURIComponent(cookie)});
+} else {
+    $notification.post(" 京东Cookie", "未检测到Cookie", "请确保您已登录京东账号");
+}
+$done({});
